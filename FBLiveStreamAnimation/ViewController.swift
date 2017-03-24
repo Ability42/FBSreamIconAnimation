@@ -12,29 +12,46 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    /*
         let curvedView = CurvedView(frame: view.frame)
         curvedView.backgroundColor = .gray
         view.addSubview(curvedView)
-
+    */
+        
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+        
+    }
+    
+    func handleTap() {
+        (0...10).forEach { (_) in
+            generateAnimatedViews()
+        }
+    }
+    
+    fileprivate func generateAnimatedViews() {
+        
         let imageView = UIImageView(image: #imageLiteral(resourceName: "thumbs_up"))
-        imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        let dimension = 20 + drand48() *  9
+        imageView.frame = CGRect(x: 0, y: 0, width: dimension, height: dimension)
         
-        // Create animation thumbsUP imageView
-        
-        let animation = CAKeyframeAnimation(keyPath: "position")
-        
-        animation.path = customPath().cgPath
-        animation.duration = 2.2
-        animation.fillMode = kCAFillModeForwards
-        animation.isRemovedOnCompletion = false
-        
+        let animation = getConfiguredAnimation()
         imageView.layer.add(animation, forKey: nil)
         
         view.addSubview(imageView)
-        
     }
 
+}
+
+func getConfiguredAnimation() -> CAAnimation {
+    let animation = CAKeyframeAnimation(keyPath: "position")
+    
+    animation.path = customPath().cgPath
+    animation.duration = 2.2
+    animation.fillMode = kCAFillModeForwards
+    animation.isRemovedOnCompletion = false
+    animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+
+    return animation
 }
 
 func customPath() -> UIBezierPath {
@@ -44,8 +61,10 @@ func customPath() -> UIBezierPath {
     
     let endPoint = CGPoint(x: 400, y: 200)
     
-    let cp1 = CGPoint(x: 100, y: 100)
-    let cp2 = CGPoint(x: 200, y: 300)
+    let yShift = 200 + drand48() * 250
+    
+    let cp1 = CGPoint(x: 100, y: 100 + yShift)
+    let cp2 = CGPoint(x: 200, y: 300 - yShift)
     
     path.addCurve(to: endPoint, controlPoint1: cp1, controlPoint2: cp2)
     
