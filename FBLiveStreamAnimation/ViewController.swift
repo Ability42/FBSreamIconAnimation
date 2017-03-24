@@ -16,6 +16,23 @@ class ViewController: UIViewController {
         let curvedView = CurvedView(frame: view.frame)
         curvedView.backgroundColor = .gray
         view.addSubview(curvedView)
+
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "thumbs_up"))
+        imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        
+        // Create animation thumbsUP imageView
+        
+        let animation = CAKeyframeAnimation(keyPath: "position")
+        
+        animation.path = customPath().cgPath
+        animation.duration = 2.2
+        animation.fillMode = kCAFillModeForwards
+        animation.isRemovedOnCompletion = false
+        
+        imageView.layer.add(animation, forKey: nil)
+        
+        view.addSubview(imageView)
+        
     }
 
 }
