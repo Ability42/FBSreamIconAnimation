@@ -30,7 +30,9 @@ class ViewController: UIViewController {
     
     fileprivate func generateAnimatedViews() {
         
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "thumbs_up"))
+        let randImage = drand48() < 0.5 ? #imageLiteral(resourceName: "thumbs_up") : #imageLiteral(resourceName: "heart")
+        let imageView = UIImageView(image: randImage)
+        
         let dimension = 20 + drand48() *  9
         imageView.frame = CGRect(x: 0, y: 0, width: dimension, height: dimension)
         
@@ -46,7 +48,10 @@ func getConfiguredAnimation() -> CAAnimation {
     let animation = CAKeyframeAnimation(keyPath: "position")
     
     animation.path = customPath().cgPath
-    animation.duration = 2.2
+    animation.duration = 2 + drand48() * 2
+    
+    print(animation.duration)
+    
     animation.fillMode = kCAFillModeForwards
     animation.isRemovedOnCompletion = false
     animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
